@@ -3,7 +3,7 @@
 
 👨‍💻 **Junior Web Developer** | Laravel & Vue.js  
 🎓 BS Information Technology – Bahria University  
-📍 Based in Islamabad, Pakistan  
+📍 Based in Rawalpindi, Pakistan  
 💡 Always curious and continuously learning  
 📚 Currently building: **Accounting Software**
 
