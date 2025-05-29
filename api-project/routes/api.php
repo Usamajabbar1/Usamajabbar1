@@ -68,6 +68,8 @@ Route::put('/company-profile', [CompanyProfileController::class, 'update']);
             Route::delete('/users/delete/{id}', [UserApiController::class, 'destroy']);
             Route::put('/users/{id}/update-status', [UserApiController::class, 'updateStatus']);
             Route::post('/users/{id}/assign-role', [UserApiController::class, 'assignRole'])->middleware('permission:assign-role');
+            Route::get('/stats/user-roles', [UserApiController::class, 'userRoleStats']);
+            Route::get('/dashboard/user-role-stats', [UserApiController::class, 'userCountByRole']);
 
             // 🛡️ Role Management
             Route::get('/roles', [RoleController::class, 'index']);

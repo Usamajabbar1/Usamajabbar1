@@ -7,7 +7,9 @@ import UserRegister from '@/components/UserRegister.vue';
 
 // Admin layout and dashboard
 import AdminLayout from '@/layouts/AdminLayout.vue';
-import Home from '@/views/Home.vue';
+import DashboardView from '@/views/DashboardView.vue'
+
+
 
 // Lazy-loaded admin feature components
 const UserListPage = () => import('@/components/UserListPage.vue');
@@ -17,6 +19,8 @@ const InvoiceManager = () => import('@/components/invoices/InvoiceManager.vue');
 const InvoiceForm = () => import('@/components/invoices/InvoiceForm.vue');
 const InvoiceDetail = () => import('@/components/invoices/InvoiceDetail.vue');
 const CustomerManager = () => import('@/components/invoices/CustomerManager.vue');
+const SupplierManager = () => import('@/components/invoices/SupplierManager.vue');
+const CompanyProfileForm = () => import('@/components/CompanyProfileForm.vue');
 
 const routes = [
   // Public routes
@@ -33,7 +37,12 @@ const routes = [
     component: AdminLayout,
     meta: { requiresAuth: true },
     children: [
-      { path: 'dashboard', name: 'Dashboard', component: Home },
+     {
+  path: '/dashboard',
+  name: 'Dashboard',
+  component: DashboardView,
+},
+
 
       // Role Management
       {
@@ -42,22 +51,22 @@ const routes = [
         component: RoleManager,
         meta: { role: ['admin'] },
       },
-      
-{
-  path: 'suppliers',
-  name: 'SupplierManager',
-  component: () => import('@/components/invoices/SupplierManager.vue'),
-  meta: { role: ['admin'] },
-},
 
-
+      // Supplier Management
       {
-  path: '/company-profile',
-  name: 'CompanyProfile',
-  component: () => import('@/components/CompanyProfileForm.vue'),
-  meta: { requiresAuth: true }
-},
+        path: 'suppliers',
+        name: 'SupplierManager',
+        component: SupplierManager,
+        meta: { role: ['admin'] },
+      },
 
+      // Company Profile
+      {
+        path: 'company-profile',
+        name: 'CompanyProfile',
+        component: CompanyProfileForm,
+        meta: { requiresAuth: true },
+      },
 
       // User Management
       {
@@ -115,7 +124,7 @@ const routes = [
     ],
   },
 
-  // Catch-all fallback
+  // Catch-all fallback to admin login
   { path: '/:pathMatch(.*)*', redirect: '/admin/login' },
 ];
 
