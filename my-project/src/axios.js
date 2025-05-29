@@ -13,7 +13,7 @@ const api = axios.create({
   },
 });
 
-// Request Interceptor: Attach token
+// Request Interceptor: Attach token if present
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -25,21 +25,20 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response Interceptor: Handle Unauthorized
+// Response Interceptor: Handle Unauthorized (401)
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
+      // Get role BEFORE removing
+      const role = localStorage.getItem('role');
+
       localStorage.removeItem('token');
       localStorage.removeItem('role');
 
-      // Optional: Show toast
       toast.error('Session expired. Please log in again.');
 
-      // Redirect to correct login page based on last known role
-      const role = localStorage.getItem('role');
       const loginRoute = role === 'admin' ? '/admin/login' : '/login';
-
       router.push(loginRoute);
     }
 

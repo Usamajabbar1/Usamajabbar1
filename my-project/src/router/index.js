@@ -42,6 +42,14 @@ const routes = [
         component: RoleManager,
         meta: { role: ['admin'] },
       },
+      
+{
+  path: 'suppliers',
+  name: 'SupplierManager',
+  component: () => import('@/components/invoices/SupplierManager.vue'),
+  meta: { role: ['admin'] },
+},
+
 
       {
   path: '/company-profile',

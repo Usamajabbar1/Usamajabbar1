@@ -67,6 +67,16 @@
                     <UsersIcon class="icon" /> Customers
                   </router-link>
                 </li>
+                <li key="suppliers">
+                  <router-link
+                    to="/suppliers"
+                    class="flex items-center space-x-2 px-4 py-2 hover:bg-gray-100"
+                    :class="{ active: $route.path === '/suppliers' }"
+                  >
+                    <PackageIcon class="w-5 h-5 icon" />
+                    <span>Suppliers</span>
+                  </router-link>
+                </li>
               </transition-group>
             </li>
           </template>
@@ -102,6 +112,7 @@ import {
   LogOut as LogOutIcon,
   FileText as FileTextIcon,
   Plus as PlusIcon,
+  Package as PackageIcon,
 } from "lucide-vue-next";
 import AppNavbar from "@/components/AppNavbar.vue";
 
@@ -118,6 +129,7 @@ export default {
     LogOutIcon,
     FileTextIcon,
     PlusIcon,
+    PackageIcon,
   },
   data() {
     return {
@@ -173,6 +185,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+/* your existing styles remain unchanged */
+</style>
+
 
 <style scoped>
 .layout-container {

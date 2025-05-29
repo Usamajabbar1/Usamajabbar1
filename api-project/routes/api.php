@@ -19,6 +19,8 @@ use App\Http\Controllers\DashboardController;
 // Invoicing
 use App\Http\Controllers\Api\InvoiceController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\SupplierController;
+
 
 Route::middleware(['force.json'])->group(function () {
 
@@ -78,6 +80,10 @@ Route::put('/company-profile', [CompanyProfileController::class, 'update']);
 
             // 🔐 Permissions (optional)
             // Route::get('/permissions', [PermissionController::class, 'index']);
+
+         Route::apiResource('/suppliers', SupplierController::class);
+
+
         });
     });
 });

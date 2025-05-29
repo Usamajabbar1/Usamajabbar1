@@ -1,7 +1,5 @@
 <template>
   <div class="dashboard-container">
-    <!-- <h1>{{ isAdmin ? 'Admin Panel' : 'Dashboard' }}</h1> -->
-
     <!-- ✅ Success Message -->
     <div v-if="successMessage" class="success-message">
       {{ successMessage }}
@@ -9,22 +7,21 @@
 
     <!-- 👨‍💼 Admin Section -->
     <div v-if="isAdmin">
-      <h2>User Management</h2>
+      <h2>Supplier Management</h2>
       <ul>
-        <li v-for="u in users" :key="u.id">
-          {{ u.name }} ({{ u.email }})
-          <button @click="editUser(u.id)">Edit</button>
+        <li v-for="s in suppliers" :key="s.id">
+          {{ s.name }} ({{ s.email || 'No Email' }})
+          <button @click="editSupplier(s)">Edit</button>
         </li>
       </ul>
 
-      <!-- ✏️ Edit User Modal -->
-      <EditUserModal
-        v-if="showEditModal"
-        :visible="showEditModal"
-        :user="selectedUser"
-        :roles="roles"
-        @submit="updateUser"
-        @close="showEditModal = false"
+      <!-- ✏️ Edit Supplier Modal -->
+      <EditSupplierModal
+        v-if="showEditSupplierModal"
+        :visible="showEditSupplierModal"
+        :supplier="selectedSupplier"
+        @submit="updateSupplier"
+        @close="showEditSupplierModal = false"
       />
     </div>
   </div>
@@ -32,20 +29,19 @@
 
 <script>
 import api from '../axios';
-import EditUserModal from '@/components/EditUserModal.vue';
+import EditSupplierModal from '@/components/invoices/EditSupplierModal.vue';
 
 export default {
   name: 'HomeView',
   components: {
-    EditUserModal,
+    EditSupplierModal,
   },
   data() {
     return {
       user: JSON.parse(localStorage.getItem('user')) || {},
-      users: [],
-      roles: JSON.parse(localStorage.getItem('roles')) || [],
-      selectedUser: null,
-      showEditModal: false,
+      suppliers: [],
+      selectedSupplier: null,
+      showEditSupplierModal: false,
       successMessage: '',
     };
   },
@@ -55,38 +51,35 @@ export default {
     },
   },
   methods: {
-    async fetchUsers() {
+    async fetchSuppliers() {
       try {
-        const res = await api.get('/users');
-        this.users = res.data;
+        const res = await api.get('/suppliers');
+        this.suppliers = res.data;
       } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error fetching suppliers:', error);
       }
     },
-    editUser(id) {
-      const user = this.users.find(u => u.id === id);
-      if (user) {
-        this.selectedUser = { ...user };
-        this.showEditModal = true;
-      }
+    editSupplier(supplier) {
+      this.selectedSupplier = { ...supplier };
+      this.showEditSupplierModal = true;
     },
-    async updateUser(updatedUser) {
+    async updateSupplier(updatedSupplier) {
       try {
-        const res = await api.put(`/users/update/${updatedUser.id}`, updatedUser);
+        const res = await api.put(`/suppliers/${updatedSupplier.id}`, updatedSupplier);
         if (res.status === 200) {
-          await this.fetchUsers();
-          this.successMessage = 'User updated successfully!';
-          this.showEditModal = false;
+          await this.fetchSuppliers();
+          this.successMessage = 'Supplier updated successfully!';
+          this.showEditSupplierModal = false;
           setTimeout(() => (this.successMessage = ''), 3000);
         }
       } catch (error) {
-        console.error('Update failed:', error);
+        console.error('Supplier update failed:', error);
       }
     },
   },
   async created() {
     if (this.isAdmin) {
-      await this.fetchUsers();
+      await this.fetchSuppliers();
     }
   },
 };
